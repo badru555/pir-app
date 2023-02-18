@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class SurveyController extends Controller
 {
-    public function index(Application $application)
+    public function survey(Application $application)
     {
         return view('questionare.survey', [
             'questions' => Question::all(),

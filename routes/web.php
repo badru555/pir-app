@@ -23,7 +23,7 @@ Route::post('/login', [LoginController::class, 'authenticate']);
 Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::get('/application', [SurveyController::class, 'application']);
-Route::get('/survey/{application}', [SurveyController::class, 'index']);
+Route::get('/survey/{application}', [SurveyController::class, 'survey']);
 Route::resource('surveys', SurveyResource::class);
 
 Route::middleware(['auth'])->group(function () {

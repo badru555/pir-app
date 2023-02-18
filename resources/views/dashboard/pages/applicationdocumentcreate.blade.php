@@ -11,38 +11,83 @@
     </style>
 @endsection
 @section('script')
-    <div class="d-none" id="addto_activitypane">
-        <div class="card bg-light">
-            <div class="card-body">
-                <div class="form-row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="activitycontrol" class="col-form-label">Aktivitas Kontrol:</label>
-                            <textarea class="form-control" id="activitycontrol"></textarea>
+    <div class="d-none">
+        <div id="addto_activitypane">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="activitycontrol" class="col-form-label">Aktivitas Kontrol:</label>
+                                <textarea class="form-control" id="activitycontrol"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="observation" class="col-form-label">Observasi:</label>
-                            <textarea class="form-control" id="observation"></textarea>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="observation" class="col-form-label">Observasi:</label>
+                                <textarea class="form-control" id="observation"></textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="status" class="col-form-label">Status:</label>
-                            <textarea class="form-control" id="status"></textarea>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="status" class="col-form-label">Status:</label>
+                                <textarea class="form-control" id="status"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="d-none" id="form-modal">
-        <div class="form-group">
-            <label for="risk" class="col-form-label">Resiko:</label>
-            <input type="text" class="form-control" id="risk">
+        <div id="addto_riskpane">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="project_risk" class="col-form-label">Resiko:</label>
+                        <input type="text" class="form-control" id="project_risk">
+                    </div>
+                    <div id="migitasipane"></div>
+
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-rounded btn-info float-right" data-i="1" id="add_migitasi">
+                        + tambah migitasi kontrol
+                    </button>
+                </div>
+            </div>
         </div>
-        <div id="activitypane"></div>
+        <div id="addto_migitasipane">
+            <div class="card text-white bg-secondary">
+                <div class="card-body">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="activitycontrol" class="col-form-label">Aktivitas Kontrol:</label>
+                                <textarea class="form-control" id="activitycontrol"></textarea>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="observation" class="col-form-label">Observasi:</label>
+                                <textarea class="form-control" id="observation"></textarea>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="status" class="col-form-label">Status:</label>
+                                <textarea class="form-control" id="status"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="form-modal">
+            <div class="form-group">
+                <label for="risk" class="col-form-label">Resiko:</label>
+                <input type="text" class="form-control" id="risk">
+            </div>
+            <div id="activitypane"></div>
+        </div>
     </div>
     <div class="modal" id="add_risk_modal" tabindex="-1" aria-labelledby="add_risk_modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -67,7 +112,8 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="add_project_modal" tabindex="-1" aria-labelledby="add_project_modalLabel" aria-hidden="true">
+    <div class="modal" id="add_project_modal" tabindex="-1" aria-labelledby="add_project_modalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -78,14 +124,14 @@
                     </button>
                 </div>
                 <div class="modal-body modal-body-project">
-                    <div id="content">
-                        <div class="form-group">
-                            <label for="project" class="col-form-label">Aktivitas Proyek:</label>
-                            <input type="text" class="form-control" id="project">
-                        </div>
-                        <div id="projectpane"></div>
+                    <div class="form-group">
+                        <label for="project" class="col-form-label">Aktivitas Proyek:</label>
+                        <input type="text" class="form-control" id="project">
                     </div>
-                    <button class="btn btn-sm btn-rounded btn-warning float-right" id="add_activity">
+                    <div id="content">
+                        <div id="riskpane"></div>
+                    </div>
+                    <button class="btn btn-sm btn-rounded btn-warning float-right" id="add_risk">
                         + tambah potensi resiko
                     </button>
                 </div>
@@ -105,6 +151,7 @@
             // RISK
             var modalbody = $('#form-modal').clone().html();
             var activityform = $('#addto_activitypane').clone().html();
+            var riskform = $('#addto_riskpane').clone().html();
             $('#add_risk_modal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
                 var modal = $(this);
@@ -140,6 +187,7 @@
                 $('.modal-body #content').empty();
                 $('#add_risk_modal').modal('hide');
             });
+
             // PROJECT
             $('#add_project_modal').on('show.bs.modal', function(event) {
                 var button = $(event.relatedTarget);
@@ -147,7 +195,23 @@
                 var fase = button.data('fase');
                 modal.find('.modal-body-project #content').append('<input type="hidden" value="' + fase +
                     '" id="fase">');
-                console.log('shown');
+            });
+            $('.modal-body-project #add_risk').on('click', function() {
+                // var fase = $('.modal-body-project #content #fase').val();
+                var i = $('modal-body-project #riskpane .card').length + 1;
+                console.log("🚀 ~ file: applicationdocumentcreate.blade.php:202 ~ $ ~ i", i)
+
+                $('.modal-body-project #riskpane').append(riskform).end().find('.card').attr('id',
+                    'riskpane' + i).end();
+                // $('.modal-body #activitypane #activitycontrol').attr('name', 'activity' + fase + '[]');
+                // $('.modal-body #activitypane #observation').attr('name', 'observation' + fase + '[]');
+                // $('.modal-body #activitypane #status').attr('name', 'status' + fase + '[]');
+            });
+            $('#add_migitasi').on('click', function() {
+                $('.modal-body-project #riskpane').append(riskform);
+            });
+            $('#add_project_modal').on('hidden.bs.modal', function() {
+                $('.modal-body-project #content').empty();
             });
         });
     </script>
@@ -253,9 +317,33 @@
                 <div class="col-lg-9 d-flex align-items-center">
                     <div class="flex" style="max-width: 100%">
                         <div class="form-group">
-                            <label class="form-label" for="batch">Tahap Blueprint;</label>
+                            <label class="form-label" for="batch">Tahap Blueprint:</label>
                             <ul id="projects1"></ul>
                             <div class="form-control btn btn-sm btn-outline-success btn-rounded" data-fase="1"
+                                data-toggle="modal" data-target="#add_project_modal">
+                                Tambah Aktivitas Proyek
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="batch">Tahap Pengembangan / Pelaksanaan UAT:</label>
+                            <ul id="projects2"></ul>
+                            <div class="form-control btn btn-sm btn-outline-success btn-rounded" data-fase="2"
+                                data-toggle="modal" data-target="#add_project_modal">
+                                Tambah Aktivitas Proyek
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="batch">Tahap System Go-Live:</label>
+                            <ul id="projects3"></ul>
+                            <div class="form-control btn btn-sm btn-outline-success btn-rounded" data-fase="3"
+                                data-toggle="modal" data-target="#add_project_modal">
+                                Tambah Aktivitas Proyek
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="batch">Tahap Post Go-Live:</label>
+                            <ul id="projects4"></ul>
+                            <div class="form-control btn btn-sm btn-outline-success btn-rounded" data-fase="4"
                                 data-toggle="modal" data-target="#add_project_modal">
                                 Tambah Aktivitas Proyek
                             </div>
