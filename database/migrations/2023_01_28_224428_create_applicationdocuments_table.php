@@ -19,6 +19,7 @@ class CreateApplicationdocumentsTable extends Migration
             $table->foreignId('application_id');
             $table->smallInteger('batch');
             $table->foreignId('documentobservationrisk_id');
+            $table->foreignId('documentprojectrisk_id');
             $table->timestamps();
         });
     }
