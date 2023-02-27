@@ -67,8 +67,8 @@
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label for="status" class="col-form-label">Status:</label>
-                                <select id="status" class="form-control">
+                                <label for="isdone" class="col-form-label">Status:</label>
+                                <select id="isdone" class="form-control">
                                     <option value="1">Selesai</option>
                                     <option value="0">Belum Selesai</option>
                                 </select>
@@ -224,7 +224,7 @@
                         var selectform = $(this).parent().prev().find('#migitasipane');
                         selectform.find('#migitasi:last').attr('name', 'migitasi[' + fase +
                             '][' + number + '][' + i + '][]');
-                        selectform.find('#status:last').attr('name', 'status[' + fase +
+                        selectform.find('#isdone:last').attr('name', 'isdone[' + fase +
                             '][' + number + '][' + i + '][]');
                         selectform.find('#note:last').attr('name', 'note[' + fase +
                             '][' + number + '][' + i + '][]');

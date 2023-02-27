@@ -6,6 +6,9 @@ use App\Models\Application;
 use App\Models\Applicationdocument;
 use App\Models\Documentobservationrisk;
 use App\Models\Documentobservationriskactivity;
+use App\Models\Documentprojectrisk;
+use App\Models\Documentprojectriskactivity;
+use App\Models\Documentprojectriskactivitymigitation;
 use Illuminate\Http\Request;
 
 class ApplicationDocumentResource extends Controller
@@ -17,7 +20,9 @@ class ApplicationDocumentResource extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.pages.applicationdocument', [
+            'applicationdocuments' => Applicationdocument::paginate(10)
+        ]);
     }
 
     /**
@@ -64,94 +69,113 @@ class ApplicationDocumentResource extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request);
-        $dataprint = [];
-        // $documentobservationrisk_ids = [];
-        $documentprojectrisk_ids = [];
-        $project_ids = [];
-        // $observationrisks = $request->input('observation_risk');
-        $projects = $request->input('projects');
         $i = 1;
+        $observationrisks = $request->input('observation_risk');
+        // $dataprint = [];
+        foreach ($observationrisks as $keyfase => $itemfase) {
+            $documentobservationrisk_ids = [];
+            foreach ($itemfase as $keyrisk => $itemrisk) {
+                $documentobservationriskactivity_ids = [];
+                $activity = $request->input('activity');
+                $observation = $request->input('observation');
+                $status = $request->input('status');
+
+                $activities = $activity[$keyfase][$keyrisk];
+                $observations = $observation[$keyfase][$keyrisk];
+                $statuses = $status[$keyfase][$keyrisk];
+
+                $merged = array_map(null, $activities, $observations, $statuses);
+                foreach ($merged as $item) {
+                    $documentobservationriskactivity_data = [
+                        // 'id' => rand(1, 9),
+                        'activity' => $item[0],
+                        'observation' => $item[1],
+                        'status' => $item[2],
+                    ];
+                    // $dataprint['activity' . $i++] = $documentobservationriskactivity_data;
+                    // array_push($documentobservationriskactivity_ids, $documentobservationriskactivity_data['id']);
+                    $documentobservationriskactivity = Documentobservationriskactivity::create($documentobservationriskactivity_data);
+                    array_push($documentobservationriskactivity_ids, $documentobservationriskactivity->id);
+                }
+
+                $observationrisk_data = [
+                    // 'id' => rand(1, 9),
+                    'fase' => $keyfase,
+                    'risk' => $itemrisk,
+                    'documentobservationriskactivity_ids' => implode(',', $documentobservationriskactivity_ids)
+                ];
+                // $dataprint['observationrisk' . $i++] = $observationrisk_data;
+                // array_push($documentobservationrisk_ids, $observationrisk_data['id']);
+                $observationrisk = Documentobservationrisk::create($observationrisk_data);
+                array_push($documentobservationrisk_ids, $observationrisk->id);
+            }
+        }
+
+        $projects = $request->input('projects');
+
 
         $migitasi = $request->input('migitasi');
-        $status = $request->input('status');
+        $isdone = $request->input('isdone');
         $note = $request->input('note');
         $projectrisks = $request->input('project_risk');
         foreach ($projects as $keyfase => $itemfase) {
+            $documentprojectriskproject_ids = [];
             foreach ($itemfase as $keyproject => $itemproject) {
+                $documentprojectriskactivity_ids = [];
                 foreach ($projectrisks[$keyfase][$keyproject] as $keyrisk => $itemrisk) {
-                    $documentprojectrisk_ids = [];
+                    $documentprojectriskactivitymigitation_ids = [];
                     $migitasis = $migitasi[$keyfase][$keyproject][$keyrisk];
-                    $statuses = $status[$keyfase][$keyproject][$keyrisk];
+                    $isdones = $isdone[$keyfase][$keyproject][$keyrisk];
                     $notes = $note[$keyfase][$keyproject][$keyrisk];
-                    $merged = array_map(null, $migitasis, $statuses, $notes);
+                    $merged = array_map(null, $migitasis, $isdones, $notes);
                     foreach ($merged as $item) {
                         $migitation_data = [
-                            'id' => rand(1, 9),
-                            'migitaion' => $item[0],
+                            // 'id' => rand(1, 9),
+                            'migitation' => $item[0],
                             'isdone' => $item[1],
                             'note' => $item[2]
                         ];
-                        $dataprint['migitation' . $i++] = $migitation_data;
-                        array_push($documentprojectrisk_ids, $migitation_data['id']);
+                        // $dataprint['migitation' . $i++] = $migitation_data;
+                        // array_push($documentprojectriskactivitymigitation_ids, $migitation_data['id']);
+                        $migitation = Documentprojectriskactivitymigitation::create($migitation_data);
+                        array_push($documentprojectriskactivitymigitation_ids, $migitation->id);
                     }
-                    $projectrisks_data = [
-                        'id' => rand(1, 9),
+                    $projectriskactivity_data = [
+                        // 'id' => rand(1, 9),
                         'risk' => $itemrisk,
-                        'documentprojectriskactivitymigitation_ids' => implode(',', $documentprojectrisk_ids)
+                        'documentprojectriskactivitymigitation_ids' => implode(',', $documentprojectriskactivitymigitation_ids)
                     ];
-                    $dataprint['projectrisk' . $i++] = $projectrisks_data;
+                    // $dataprint['projectrisk' . $i++] = $projectriskactivity_data;
+                    // array_push($documentprojectriskactivity_ids, $projectriskactivity_data['id']);
+                    $projectriskactivity = Documentprojectriskactivity::create($projectriskactivity_data);
+                    array_push($documentprojectriskactivity_ids, $projectriskactivity->id);
                 }
                 $projects_data = [
-                    'id' => rand(1, 9),
+                    // 'id' => rand(1, 9),
                     'fase' => $keyfase,
                     'project' => $itemproject,
-                    'documentprojectriskactivity_ids' => implode(',', $documentprojectrisk_ids)
+                    'documentprojectriskactivity_ids' => implode(',', $documentprojectriskactivity_ids)
                 ];
-                $dataprint['projects' . $i++] = $projects_data;
-                array_push($project_ids, $projects_data['id']);
+                // $dataprint['projects' . $i++] = $projects_data;
+                // array_push($documentprojectriskproject_ids, $projects_data['id']);
+                $projects = Documentprojectrisk::create($projects_data);
+                array_push($documentprojectriskproject_ids, $projects->id);
             }
         }
-        // foreach ($observationrisks as $keyfase => $itemfase) {
-        //     foreach ($itemfase as $keyrisk => $itemrisk) {
-        //         $documentobservationriskactivity_ids = [];
-        //         $activity = $request->input('activity');
-        //         $observation = $request->input('observation');
-        //         $status = $request->input('status');
-        //         $activities = $activity[$keyfase][$keyrisk];
-        //         $observations = $observation[$keyfase][$keyrisk];
-        //         $statuses = $status[$keyfase][$keyrisk];
-        //         $merged = array_map(null, $activities, $observations, $statuses);
-        //         foreach ($merged as $item) {
-        //             $documentobservationriskactivity_data = [
-        //                 'id' => rand(1, 9),
-        //                 'activity' => $item[0],
-        //                 'observation' => $item[1],
-        //                 'status' => $item[2],
-        //             ];
-        //             $dataprint['activity' . $i++] = $documentobservationriskactivity_data;
-        //             array_push($documentobservationriskactivity_ids, $documentobservationriskactivity_data['id']);
-        //         }
 
-        //         $observationrisk_data = [
-        //             'id' => rand(1, 9),
-        //             'fase' => $keyfase,
-        //             'risk' => $itemrisk,
-        //             'documentobservationriskactivity_ids' => implode(',', $documentobservationriskactivity_ids)
-        //         ];
-        //         $dataprint['observationrisk' . $i++] = $observationrisk_data;
-        //         array_push($documentobservationrisk_ids, $observationrisk_data['id']);
-        //     }
-        // }
         $appdoc_data = [
             'user_id' => auth()->user()->id,
             'application_id' => $request->input('application_id'),
             'batch' => $request->input('batch'),
-            // 'documentobservationrisk_id' => implode(',', $documentobservationrisk_ids),
-            'documentprojectrisk_id' => implode(',', $project_ids),
+            'documentobservationrisk_ids' => implode(',', $documentobservationrisk_ids),
+            'documentprojectrisk_ids' => implode(',', $documentprojectriskproject_ids),
+            'plantodo' => $request->input('planning')
         ];
-        $dataprint['appdoc'] = $appdoc_data;
-        echo '<pre>' . json_encode($dataprint, JSON_PRETTY_PRINT) . '</pre>';
+        Applicationdocument::create($appdoc_data);
+        return redirect('/applicationdocuments/create')->with('message', 'Dokumen PIR telah dibuat!');
+
+        // $dataprint['appdoc'] = $appdoc_data;
+        // echo '<pre>' . json_encode($dataprint, JSON_PRETTY_PRINT) . '</pre>';
     }
 
     /**

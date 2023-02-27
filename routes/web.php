@@ -4,6 +4,7 @@ use App\Http\Controllers\ApplicationDocumentResource;
 use App\Http\Controllers\ApplicationResource;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DraftController;
 use App\Http\Controllers\FaqResource;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\QuestionResource;
@@ -33,4 +34,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('applications', ApplicationResource::class);
     Route::resource('questions', QuestionResource::class);
     Route::resource('applicationdocuments', ApplicationDocumentResource::class);
+    Route::get('draft/{applicationdocument}', [DraftController::class, 'pir']);
 });
