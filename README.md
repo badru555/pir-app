@@ -25,6 +25,11 @@ Go to the project directory
 ```bash
   cd pir-app
 ```
+Update composer package
+
+```bash
+  composer update
+```
 
 Laravel instruction command: 
 
