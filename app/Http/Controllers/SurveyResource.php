@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use App\Models\Respondent;
 use App\Models\Survey;
 use Illuminate\Http\Request;
@@ -16,6 +17,17 @@ class SurveyResource extends Controller
     public function index()
     {
         //
+    }
+    public function detail($id)
+    {
+        $surveys = Survey::with('respondent')->where('application_id', $id)->whereYear('created_at', date('Y'))->orderBy('created_at')->paginate(10);
+        // $batches = Batch::where('application_id', $id)->whereYear('startdate', date('Y'))->get();
+        $data = [
+            'surveys' => $surveys,
+            // 'batches' => $batches
+        ];
+        return view('dashboard.pages.surveydetail', $data);
+        // echo '<pre>' . json_encode($data, JSON_PRETTY_PRINT) . '</pre>';
     }
 
     /**

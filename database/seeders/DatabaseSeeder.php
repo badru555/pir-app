@@ -57,12 +57,9 @@ class DatabaseSeeder extends Seeder
         Respondentdepartment::create(['department' => 'Divisi Keuangan Operasional dan PKBL']);
         Respondentdepartment::create(['department' => 'Divisi Manajemen Risiko']);
         Respondentdepartment::create(['department' => 'Anak Perusahaan']);
-        Applicationplatform::create([
-            'platform' => 'WEB'
-        ]);
-        Applicationplatform::create([
-            'platform' => 'Mobile'
-        ]);
+        Applicationplatform::create(['platform' => 'WEB']);
+        Applicationplatform::create(['platform' => 'Mobile']);
+        Applicationplatform::create(['platform' => 'Desktop']);
         Application::create([
             'applicationplatform_id' => '1',
             'user_id' => '1',

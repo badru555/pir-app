@@ -21,4 +21,8 @@ class Application extends Model
     {
         return $this->hasMany(Survey::class);
     }
+    public function batch()
+    {
+        return $this->hasMany(Batch::class);
+    }
 }

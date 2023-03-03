@@ -1,103 +1,90 @@
-@extends('layout')
+@extends('dashboard.layout')
 @section('content')
     <div class="container page__container page-section pb-0">
-        <h1 class="h2 mb-0">Invoices</h1>
+        <h1 class="h2 mb-0">Surveys</h1>
         <ol class="breadcrumb m-0 p-0">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">List of Invoices</li>
+            <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
+            <li class="breadcrumb-item active">Daftar Surveys</li>
         </ol>
     </div>
 
-    <div class="container page__container page-section">
+    <div class="container-fluid page__container page-section">
 
 
         <div class="page-separator">
-            <div class="page-separator__text">Invoices</div>
+            <div class="page-separator__text">Surveys</div>
         </div>
 
+        {{-- <a class="btn btn-sm btn-rounded btn-primary mb-2" href="/users/create">Tambah Baru</a> --}}
         <div class="card mb-lg-32pt">
 
             <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-date"
                 data-lists-sort-desc="true"
-                data-lists-values='["js-lists-values-name", "js-lists-values-department", "js-lists-values-status", "js-lists-values-type", "js-lists-values-phone", "js-lists-values-date"]'>
+                data-lists-values='["js-lists-values-name", "js-lists-values-value", "js-lists-values-time", "js-lists-values-advice"]'>
 
                 <table class="table mb-0 thead-border-top-0 table-nowrap">
                     <thead>
                         <tr>
-                            <th style="width: 150px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-name">Client</a>
+                            <th style="width: 24px;">
+                                #
                             </th>
 
-                            <th style="width: 150px;">
-                                <a href="javascript:void(0)" class="sort"
-                                    data-sort="js-lists-values-department">Invoice</a>
+                            <th style="width: 400px;">
+                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-name">Nama</a>
                             </th>
 
-                            <th style="width: 48px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-status">
-                                    Status
-                                </a>
+                            <th style="width: 100px;">
+                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-value">Nilai
+                                    Kepuasan</a>
                             </th>
-                            <th style="width: 48px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-status">
-                                    Overdue
-                                </a>
+                            <th style="width: 200px;">
+                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-time">Waktu
+                                    Survey</a>
                             </th>
-
-                            <th style="width: 48px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-type">Description</a>
+                            <th style="width: 500px;">
+                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-advice">Saran</a>
                             </th>
 
-                            <th style="width: 48px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-phone">Date</a>
-                            </th>
 
-                            <th style="width: 48px;">
-                                <a href="javascript:void(0)" class="sort" data-sort="js-lists-values-date">Department</a>
-                            </th>
-                            <th style="width: 24px;"></th>
+                            {{-- <th style="width: 24px;"></th> --}}
                         </tr>
                     </thead>
                     <tbody class="list" id="employees">
-                        @foreach ($invoices as $item)
+                        @foreach ($surveys as $key => $item)
                             <tr>
                                 <td>
                                     <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
-                                        {{ $item->quotation->client->client }}
+                                        {{ $surveys->firstItem() + $key }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="media flex-nowrap align-items-center js-lists-values-name"
+                                        style="white-space: nowrap;">
+                                        {{ $item->respondent->name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="media flex-nowrap align-items-center js-lists-values-answer"
+                                        style="white-space: nowrap;">
+                                        {{ $item->ans1 + $item->ans2 + $item->ans3 + $item->ans4 + $item->ans5 + $item->ans6 + $item->ans7 + $item->ans8 + $item->ans9 + $item->ans10 + $item->ans11 + $item->ans12 + $item->ans13 + $item->ans14 + $item->ans15 + $item->ans16 + $item->ans17 + $item->ans18 + $item->ans19 + $item->ans20 }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="media flex-nowrap align-items-center js-lists-values-time"
+                                        style="white-space: nowrap;">
+                                        {{ $item->created_at->format('d M Y H:m') }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="media flex-nowrap align-items-center js-lists-values-advice"
+                                        style="white-space: nowrap;">
+                                        {{ $item->idea }}
                                     </div>
                                 </td>
 
-                                <td>
 
-                                    <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
-                                        {{ $item->invoiceref }}
-                                    </div>
 
-                                </td>
-                                <td>
-                                    @if ($item->is_paid == 1)
-                                        paid
-                                    @else
-                                        unpaid
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ date('d M Y', strtotime($item->overdue)) }}
-                                </td>
-
-                                <td>
-                                    {{ $item->note }}
-                                </td>
-
-                                <td>
-                                    {{ date('d M Y', strtotime($item->created_at)) }}
-                                </td>
-
-                                <td>
-                                    <small
-                                        class="js-lists-values-date text-50">{{ $item->quotation->department->department }}</small>
-                                </td>
-                                <td class="text-right">
+                                {{-- <td class="text-right">
                                     <!-- Default dropleft button -->
                                     <div class="btn-group dropleft">
                                         <a class="text-50" href="#" id="dropdownMenuLink" data-toggle="dropdown"
@@ -105,13 +92,17 @@
                                             <i class="material-icons">more_vert</i>
                                         </a>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/invoicedraft/{{ $item->id }}">
+                                            <a class="dropdown-item" href="/quotationdraft/{{ $item->id }}">
                                                 View Draft
                                             </a>
+                                            <a class="dropdown-item" href="/invoices/create/{{ $item->id }}">
+                                                Proceed to Invoice
+                                            </a>
+                                            <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
 
-                                </td>
+                                </td> --}}
                             </tr>
                         @endforeach
 
@@ -192,30 +183,7 @@
 
             <div class="card-footer p-8pt">
 
-                <ul class="pagination justify-content-start pagination-xsm m-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true" class="material-icons">chevron_left</span>
-                            <span>Prev</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Page 1">
-                            <span>1</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Page 2">
-                            <span>2</span>
-                        </a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span>Next</span>
-                            <span aria-hidden="true" class="material-icons">chevron_right</span>
-                        </a>
-                    </li>
-                </ul>
+                {{ $surveys->links('dashboard.layout.pagination') }}
 
             </div>
 

@@ -2,6 +2,9 @@
 @section('head')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link type="text/css" href="/assets/css/select2.css" rel="stylesheet">
+
+    <script src="//cdn.ckeditor.com/4.20.2/basic/ckeditor.js"></script>
+
     <style>
         .inside-card {
             position: absolute;
@@ -11,6 +14,10 @@
     </style>
 @endsection
 @section('script')
+    <script>
+        CKEDITOR.replace('planning');
+    </script>
+
     <div class="d-none">
         <div id="addto_activitypane">
             <div class="card bg-light">
@@ -154,6 +161,47 @@
             $('#application_id').select2({
                 placeholder: 'Pilih aplikasi...'
             });
+
+            $("#application_id").change(function() {
+                console.log('changed');
+                if ($('#application_id').val() !== '') {
+                    console.log($('#application_id').val());
+                    var application_id = $('#application_id').val();
+                    loadBatchList(application_id);
+                    $('#batch').removeClass('d-none');
+                } else {
+                    $('#batch').addClass('d-none');
+                }
+            });
+
+            // replace with new data
+            function loadBatchList(application_id) {
+
+                var options = [];
+                $.ajax({
+                    type: 'GET', //THIS NEEDS TO BE GET
+                    url: '/getbatchlist/' + application_id,
+                    dataType: 'json',
+                    success: function(data) {
+                        $.each(data, function(index, item) {
+                            options.push({
+                                text: item.text,
+                                id: item.id
+                            });
+                        });
+                        $('#batch_id').empty().select2({
+                            placeholder: 'Pilih batch...',
+                            data: options
+                        });
+                    },
+                    error: function(req, err) {
+                        console.log('Error: ' + err);
+                    }
+                });
+
+
+            }
+
             // RISK
             var modalbody = $('#form-modal').clone().html();
             var modalbodyproject = $('#form-modal-project').clone().html();
@@ -275,7 +323,7 @@
 
     <div class="container page__container page-section">
 
-        <form action="/applicationdocuments" method="POST">
+        <form action="/applicationdocuments" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row mb-32pt">
                 <div class="col-lg-3">
@@ -303,13 +351,16 @@
                                     </option>
                                 @endforeach
                             </select>
-
                         </div>
-                        <div class="form-group">
+                        <div class="form-group d-none" id="batch">
+                            <label class="form-label" for="batch_id">Batch:</label> <br>
+                            <select name="batch_id" id="batch_id" class="form-control" style="width: 100%"></select>
+                        </div>
+                        {{-- <div class="form-group">
                             <label class="form-label" for="batch">Batch (PIR ke ...):</label>
                             <input type="number" class="form-control" id="batch" name="batch" min="1"
                                 max="10">
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -392,6 +443,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row mb-32pt">
                 <div class="col-lg-3">
                     <div class="page-separator">
@@ -403,6 +455,20 @@
                 </div>
                 <div class="col-lg-9 d-flex align-items-center">
                     <div class="flex" style="max-width: 100%">
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <input type="file" id="surveyresult_image" name="surveyresult_image"
+                                    class="custom-file-input">
+                                <label for="surveyresult_image" class="custom-file-label">Tambahkan Hasil Survey</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-file">
+                                <input type="file" id="pentestresult_image" name="pentestresult_image"
+                                    class="custom-file-input">
+                                <label for="pentestresult_image" class="custom-file-label">Tambahkan Hasil Pentest</label>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="planning">Rencana Perbaikan Kedepan:</label>
                             <textarea name="planning" id="planning" rows="3" class="form-control"></textarea>

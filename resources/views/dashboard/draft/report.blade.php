@@ -311,7 +311,7 @@
             @endif
         @endforeach
     </table>
-    {{-- @if ($migitations[2])
+    @if ($migitations[2])
         <div style="display: none;">NEWPAGE</div>
         <style>
             table {
@@ -522,7 +522,7 @@
                 @endif
             @endforeach
         </table>
-    @endif --}}
+    @endif
 </body>
 
 </html>

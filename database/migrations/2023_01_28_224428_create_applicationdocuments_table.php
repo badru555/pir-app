@@ -17,10 +17,12 @@ class CreateApplicationdocumentsTable extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('application_id');
-            $table->smallInteger('batch');
+            $table->foreignId('batch_id');
             $table->string('documentobservationrisk_ids');
             $table->string('documentprojectrisk_ids');
             $table->text('plantodo');
+            $table->string('surveyresult_image')->nullable();
+            $table->string('pentestresult_image')->nullable();
             $table->timestamps();
         });
     }

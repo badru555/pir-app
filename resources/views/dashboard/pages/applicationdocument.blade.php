@@ -39,7 +39,16 @@
                         </tr>
                     </thead>
                     <tbody class="list" id="employees">
+                        @php
+                            $temp_appid = 0;
+                            $i = 0;
+                        @endphp
                         @foreach ($applicationdocuments as $key => $item)
+                            @if ($temp_appid != $item->application_id)
+                                @php
+                                    $i = 1;
+                                @endphp
+                            @endif
                             <tr>
                                 <td>
                                     <div class="media flex-nowrap align-items-center" style="white-space: nowrap;">
@@ -49,7 +58,7 @@
                                 <td>
                                     <div class="media flex-nowrap align-items-center js-lists-values-question"
                                         style="white-space: nowrap;">
-                                        {{ $item->application->name . ' ' . $item->created_at->format('Y') . ' Batch ' . $item->batch }}
+                                        {{ $item->application->name . ' ' . $item->created_at->format('Y') . ' Batch ' . $i++ }}
                                     </div>
                                 </td>
                                 <td>
@@ -69,18 +78,17 @@
                                             <i class="material-icons">more_vert</i>
                                         </a>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/quotationdraft/{{ $item->id }}">
+                                            <a class="dropdown-item" href="/draft/{{ $item->id }}">
                                                 View Draft
                                             </a>
-                                            <a class="dropdown-item" href="/invoices/create/{{ $item->id }}">
-                                                Proceed to Invoice
-                                            </a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
                                         </div>
                                     </div>
 
                                 </td>
                             </tr>
+                            @php
+                                $temp_appid = $item->application_id;
+                            @endphp
                         @endforeach
 
                         {{-- <tr>

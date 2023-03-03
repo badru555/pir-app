@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Applicationdocument extends Model
+class Batch extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+
     public function application()
     {
         return $this->belongsTo(Application::class);
     }
-    public function batch()
+    public function applicationdocument()
     {
-        return $this->belongsTo(Batch::class);
+        return $this->hasOne(Applicationdocument::class);
     }
 }

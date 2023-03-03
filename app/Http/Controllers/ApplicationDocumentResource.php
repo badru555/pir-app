@@ -21,7 +21,7 @@ class ApplicationDocumentResource extends Controller
     public function index()
     {
         return view('dashboard.pages.applicationdocument', [
-            'applicationdocuments' => Applicationdocument::paginate(10)
+            'applicationdocuments' => Applicationdocument::whereYear('created_at', date('Y'))->orderBy('application_id')->orderBy('created_at')->paginate(10)
         ]);
     }
 
@@ -33,7 +33,7 @@ class ApplicationDocumentResource extends Controller
     public function create()
     {
         return view('dashboard.pages.applicationdocumentcreate', [
-            'applications' => Application::all()
+            'applications' => Application::with('batch')->get()
         ]);
     }
     // $observationrisks = $request->input('observation_risk');
@@ -69,11 +69,11 @@ class ApplicationDocumentResource extends Controller
      */
     public function store(Request $request)
     {
-        $i = 1;
+        // $i = 1;
         $observationrisks = $request->input('observation_risk');
         // $dataprint = [];
+        $documentobservationrisk_ids = [];
         foreach ($observationrisks as $keyfase => $itemfase) {
-            $documentobservationrisk_ids = [];
             foreach ($itemfase as $keyrisk => $itemrisk) {
                 $documentobservationriskactivity_ids = [];
                 $activity = $request->input('activity');
@@ -118,8 +118,8 @@ class ApplicationDocumentResource extends Controller
         $isdone = $request->input('isdone');
         $note = $request->input('note');
         $projectrisks = $request->input('project_risk');
+        $documentprojectriskproject_ids = [];
         foreach ($projects as $keyfase => $itemfase) {
-            $documentprojectriskproject_ids = [];
             foreach ($itemfase as $keyproject => $itemproject) {
                 $documentprojectriskactivity_ids = [];
                 foreach ($projectrisks[$keyfase][$keyproject] as $keyrisk => $itemrisk) {
@@ -166,11 +166,17 @@ class ApplicationDocumentResource extends Controller
         $appdoc_data = [
             'user_id' => auth()->user()->id,
             'application_id' => $request->input('application_id'),
-            'batch' => $request->input('batch'),
+            'batch_id' => $request->input('batch_id'),
             'documentobservationrisk_ids' => implode(',', $documentobservationrisk_ids),
             'documentprojectrisk_ids' => implode(',', $documentprojectriskproject_ids),
             'plantodo' => $request->input('planning')
         ];
+        if ($request->hasFile('surveyresult_image')) {
+            $appdoc_data['surveyresult_image'] = $request->surveyresult_image->store('images-applicationdoc/resultsurvey');
+        }
+        if ($request->hasFile('pentestresult_image')) {
+            $appdoc_data['pentestresult_image'] = $request->pentestresult_image->store('images-applicationdoc/resultpentest');
+        }
         Applicationdocument::create($appdoc_data);
         return redirect('/applicationdocuments/create')->with('message', 'Dokumen PIR telah dibuat!');
 
