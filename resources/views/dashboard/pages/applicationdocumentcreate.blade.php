@@ -3,7 +3,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link type="text/css" href="/assets/css/select2.css" rel="stylesheet">
 
-    <script src="//cdn.ckeditor.com/4.20.2/basic/ckeditor.js"></script>
+    <script src="//cdn.ckeditor.com/4.20.2/standard/ckeditor.js"></script>
 
     <style>
         .inside-card {
@@ -15,7 +15,64 @@
 @endsection
 @section('script')
     <script>
-        CKEDITOR.replace('planning');
+        CKEDITOR.replace('surveyresult', {
+            language: 'in',
+            toolbar: [{
+                    name: 'clipboard',
+                    items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+                },
+                {
+                    name: 'editing',
+                    items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']
+                },
+                {
+                    name: 'insert',
+                    items: ['Table']
+                },
+                '/',
+                {
+                    name: 'styles',
+                    items: ['Styles', 'Format']
+                },
+                {
+                    name: 'basicstyles',
+                    items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
+                },
+                {
+                    name: 'paragraph',
+                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+                }
+            ]
+        });
+        CKEDITOR.replace('planning', {
+            language: 'in',
+            toolbar: [{
+                    name: 'clipboard',
+                    items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']
+                },
+                {
+                    name: 'editing',
+                    items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt']
+                },
+                {
+                    name: 'insert',
+                    items: ['Table']
+                },
+                '/',
+                {
+                    name: 'styles',
+                    items: ['Styles', 'Format']
+                },
+                {
+                    name: 'basicstyles',
+                    items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']
+                },
+                {
+                    name: 'paragraph',
+                    items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']
+                }
+            ]
+        });
     </script>
 
     <div class="d-none">
@@ -456,11 +513,15 @@
                 <div class="col-lg-9 d-flex align-items-center">
                     <div class="flex" style="max-width: 100%">
                         <div class="form-group">
-                            <div class="custom-file">
+                            <div class="form-group">
+                                <label class="form-label" for="surveyresult">Hasil Survey:</label>
+                                <textarea name="surveyresult" id="surveyresult" rows="3" class="form-control"></textarea>
+                            </div>
+                            {{-- <div class="custom-file">
                                 <input type="file" id="surveyresult_image" name="surveyresult_image"
                                     class="custom-file-input">
                                 <label for="surveyresult_image" class="custom-file-label">Tambahkan Hasil Survey</label>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="form-group">
                             <div class="custom-file">

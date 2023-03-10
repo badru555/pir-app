@@ -31,13 +31,18 @@
 <body>
     <h2>Observasi Pengawasan Manajemen Proyek</h2>
     <h3>Fase Go-Live Support: Post Go Live Support</h3>
+    @php
+        $level1 = 1;
+        $level2 = 1;
+        $level3 = 1;
+    @endphp
     @foreach ($observations[0] as $obs)
         <table border="1">
             <tr class="bg-secondary">
                 <td colspan="3">Resiko</td>
             </tr>
             <tr>
-                <td colspan="3">GS.R1.{{ $loop->iteration }} {{ $obs->risk }}</td>
+                <td colspan="3">GS.R1.{{ $level2++ }} {{ $obs->risk }}</td>
             </tr>
             <tr class="text-bold">
                 <td>Aktivitas Kontrol</td>
@@ -49,7 +54,7 @@
             @endphp
             @foreach ($riskactivities as $item)
                 <tr>
-                    <td>{{ $item->activity }}</td>
+                    <td>{{ 'GS.C1.' . $level3++ . ' ' . $item->activity }}</td>
                     <td>{{ $item->observation }}</td>
                     <td>{{ $item->status }}</td>
                 </tr>
@@ -85,7 +90,7 @@
                 <td colspan="3">Resiko</td>
             </tr>
             <tr>
-                <td colspan="3">GS.R1.{{ $loop->iteration }} {{ $obs->risk }}</td>
+                <td colspan="3">GS.R1.{{ $level2++ }} {{ $obs->risk }}</td>
             </tr>
             <tr class="text-bold">
                 <td>Aktivitas Kontrol</td>
@@ -97,7 +102,7 @@
             @endphp
             @foreach ($riskactivities as $item)
                 <tr>
-                    <td>{{ $item->activity }}</td>
+                    <td>{{ 'GS.C1.' . $level3++ . ' ' . $item->activity }}</td>
                     <td>{{ $item->observation }}</td>
                     <td>{{ $item->status }}</td>
                 </tr>
@@ -128,6 +133,19 @@
     <h2>Daftar Resiko, Mitigasi Kontrol, dan Tindak Lanjut</h2>
     <h3>Tahap Blueprint</h3>
     <table border="1">
+        <tr>
+            <td class="bg-warning" style="width: 40%">
+                Fase Project Preparation
+            </td>
+            <td style="width: 60%">
+                Pada fase ini dilakukan aktivitas persiapan pelaksanaan proyek, yaitu : penyusunan tim proyek,
+                pelaksanaan Kick-off meeting dan penyusunan Project Charter yang berisi penjelasan ringkas terkait ruang
+                lingkup pekerjaan, jalur komunikasi, timeline, deliverables, dan struktur tim proyek.
+            </td>
+        </tr>
+    </table>
+    <div>&nbsp;</div>
+    <table border="1">
         <tr class="bg-warning">
             <td>Aktivitas Proyek</td>
             <td>Potensi Risiko</td>
@@ -138,6 +156,9 @@
         @foreach ($migitations[0] as $mig)
             @php
                 $riskpotentions = explode(',', $mig->documentprojectriskactivity_ids);
+                $level1 = 1;
+                $level2 = 1;
+                $level3 = 1;
             @endphp
             <tr>
                 <td rowspan="{{ count($riskpotentions) }}">{{ $mig->project }}</td>
@@ -145,17 +166,15 @@
                     $projectactivities = App\Models\Documentprojectriskactivity::whereIn('id', $riskpotentions)->get();
                     $projectactivities_count = count($projectactivities);
                 @endphp
-                <td>{{ $projectactivities[0]->risk }}</td>
+                <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[0]->risk }}</td>
                 @php
                     $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[0]->documentprojectriskactivitymigitation_ids))->get();
                     $projectactivitymigitations_count = count($projectactivitymigitations);
                 @endphp
                 <td>
-                    <ol type="i">
-                        @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                            <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                        @endfor
-                    </ol>
+                    @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                        {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                    @endfor
                 </td>
                 <td>
                     <ol type="i">
@@ -175,18 +194,15 @@
             @if ($projectactivities_count > 1)
                 @for ($i = 1; $i < $projectactivities_count; $i++)
                     <tr>
-                        <td></td>
-                        <td>{{ $projectactivities[$i]->risk }}</td>
+                        <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[$i]->risk }}</td>
                         @php
                             $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[$i]->documentprojectriskactivitymigitation_ids))->get();
                             $projectactivitymigitations_count = count($projectactivitymigitations);
                         @endphp
                         <td>
-                            <ol type="i">
-                                @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                    <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                                @endfor
-                            </ol>
+                            @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                                {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                            @endfor
                         </td>
                         <td>
                             <ol type="i">
@@ -232,6 +248,18 @@
     <h2>Daftar Resiko, Mitigasi Kontrol, dan Tindak Lanjut</h2>
     <h3>Tahap Pengembangan/Pelaksanaan UAT</h3>
     <table border="1">
+        <tr>
+            <td class="bg-warning" style="width: 40%">
+                Fase Realisasi
+            </td>
+            <td style="width: 60%">
+                Pada fase ini dilakukan aktivitas konfigurasi sistem. Unit Test (UT), RICEF development, System
+                Integration Test (SIT), Analisa Change Impact, Migrasi Data dan Train the Trainer (TTT).
+            </td>
+        </tr>
+    </table>
+    <div>&nbsp;</div>
+    <table border="1">
         <tr class="bg-warning">
             <td>Aktivitas Proyek</td>
             <td>Potensi Risiko</td>
@@ -249,17 +277,15 @@
                     $projectactivities = App\Models\Documentprojectriskactivity::whereIn('id', $riskpotentions)->get();
                     $projectactivities_count = count($projectactivities);
                 @endphp
-                <td>{{ $projectactivities[0]->risk }}</td>
+                <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[0]->risk }}</td>
                 @php
                     $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[0]->documentprojectriskactivitymigitation_ids))->get();
                     $projectactivitymigitations_count = count($projectactivitymigitations);
                 @endphp
                 <td>
-                    <ol type="i">
-                        @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                            <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                        @endfor
-                    </ol>
+                    @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                        {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                    @endfor
                 </td>
                 <td>
                     <ol type="i">
@@ -279,17 +305,15 @@
             @if ($projectactivities_count > 1)
                 @for ($i = 1; $i < $projectactivities_count; $i++)
                     <tr>
-                        <td>{{ $projectactivities[$i]->risk }}</td>
+                        <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[$i]->risk }}</td>
                         @php
                             $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[$i]->documentprojectriskactivitymigitation_ids))->get();
                             $projectactivitymigitations_count = count($projectactivitymigitations);
                         @endphp
                         <td>
-                            <ol type="i">
-                                @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                    <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                                @endfor
-                            </ol>
+                            @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                                {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                            @endfor
                         </td>
                         <td>
                             <ol type="i">
@@ -336,6 +360,18 @@
         <h2>Daftar Resiko, Mitigasi Kontrol, dan Tindak Lanjut</h2>
         <h3>Tahap System Go-Live</h3>
         <table border="1">
+            <tr>
+                <td class="bg-warning" style="width: 40%">
+                    Fase Final Preparation
+                </td>
+                <td style="width: 60%">
+                    Pada fase ini dilakukan aktivitas pelatihan bagi para End User serta kegiatan persiapan untuk
+                    pelaksanaan Go Live.
+                </td>
+            </tr>
+        </table>
+        <div>&nbsp;</div>
+        <table border="1">
             <tr class="bg-warning">
                 <td>Aktivitas Proyek</td>
                 <td>Potensi Risiko</td>
@@ -353,17 +389,15 @@
                         $projectactivities = App\Models\Documentprojectriskactivity::whereIn('id', $riskpotentions)->get();
                         $projectactivities_count = count($projectactivities);
                     @endphp
-                    <td>{{ $projectactivities[0]->risk }}</td>
+                    <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[0]->risk }}</td>
                     @php
                         $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[0]->documentprojectriskactivitymigitation_ids))->get();
                         $projectactivitymigitations_count = count($projectactivitymigitations);
                     @endphp
                     <td>
-                        <ol type="i">
-                            @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                            @endfor
-                        </ol>
+                        @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                            {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                        @endfor
                     </td>
                     <td>
                         <ol type="i">
@@ -384,17 +418,15 @@
                 @if ($projectactivities_count > 1)
                     @for ($i = 1; $i < $projectactivities_count; $i++)
                         <tr>
-                            <td>{{ $projectactivities[$i]->risk }}</td>
+                            <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[$i]->risk }}</td>
                             @php
                                 $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[$i]->documentprojectriskactivitymigitation_ids))->get();
                                 $projectactivitymigitations_count = count($projectactivitymigitations);
                             @endphp
                             <td>
-                                <ol type="i">
-                                    @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                        <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                                    @endfor
-                                </ol>
+                                @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                                    {{ $projectactivitymigitations[$i]->migitation }}<br>
+                                @endfor
                             </td>
                             <td>
                                 <ol type="i">
@@ -442,6 +474,17 @@
         <h2>Daftar Resiko, Mitigasi Kontrol, dan Tindak Lanjut</h2>
         <h3>Tahap Post Go-Live</h3>
         <table border="1">
+            <tr>
+                <td class="bg-warning" style="width: 40%">
+                    Fase Go Live & Support
+                </td>
+                <td style="width: 60%">
+                    Pada fase ini dilakukan aktivitas pelaksanaan Go Live aplikasi untuk dapat digunakan End User.
+                </td>
+            </tr>
+        </table>
+        <div>&nbsp;</div>
+        <table border="1">
             <tr class="bg-warning">
                 <td>Aktivitas Proyek</td>
                 <td>Potensi Risiko</td>
@@ -459,17 +502,15 @@
                         $projectactivities = App\Models\Documentprojectriskactivity::whereIn('id', $riskpotentions)->get();
                         $projectactivities_count = count($projectactivities);
                     @endphp
-                    <td>{{ $projectactivities[0]->risk }}</td>
+                    <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[0]->risk }}</td>
                     @php
                         $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[0]->documentprojectriskactivitymigitation_ids))->get();
                         $projectactivitymigitations_count = count($projectactivitymigitations);
                     @endphp
                     <td>
-                        <ol type="i">
-                            @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                            @endfor
-                        </ol>
+                        @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                            {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
+                        @endfor
                     </td>
                     <td>
                         <ol type="i">
@@ -490,17 +531,15 @@
                 @if ($projectactivities_count > 1)
                     @for ($i = 1; $i < $projectactivities_count; $i++)
                         <tr>
-                            <td>{{ $projectactivities[$i]->risk }}</td>
+                            <td>{{ "PP.R$level1." . $level2++ . ' ' . $projectactivities[$i]->risk }}</td>
                             @php
                                 $projectactivitymigitations = App\Models\Documentprojectriskactivitymigitation::whereIn('id', explode(',', $projectactivities[$i]->documentprojectriskactivitymigitation_ids))->get();
                                 $projectactivitymigitations_count = count($projectactivitymigitations);
                             @endphp
                             <td>
-                                <ol type="i">
-                                    @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                        <li>{{ $projectactivitymigitations[$i]->migitation }}</li>
-                                    @endfor
-                                </ol>
+                                @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
+                                    {{ $projectactivitymigitations[$i]->migitation }}<br>
+                                @endfor
                             </td>
                             <td>
                                 <ol type="i">

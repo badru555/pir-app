@@ -82,7 +82,7 @@
 
                         </span>
 
-                        <span class="d-none d-lg-block">PIR-App</span>
+                        <span class="d-none d-lg-block">PIR Management System</span>
                     </a>
 
                     <!-- // END Navbar Brand -->

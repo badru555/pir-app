@@ -3,12 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
-use App\Models\Respondent;
 use App\Models\Survey;
+use App\Models\Respondent;
 use Illuminate\Http\Request;
+use App\Exports\SurveysExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SurveyResource extends Controller
 {
+    public function export($id)
+    {
+        $surveys = Survey::with('respondent')->where('application_id', $id)->whereYear('created_at', date('Y'))->orderBy('created_at')->get();
+        $result = [];
+        $result[] = ['No', 'Responden', 'Nilai Kepuasan', 'Waktu Survey'];
+        $i = 1;
+        foreach ($surveys as $key => $item) {
+            $result[] = [$i++, $item->respondent->name, $item->ans1 + $item->ans2 + $item->ans3 + $item->ans4 + $item->ans5 + $item->ans6 + $item->ans7 + $item->ans8 + $item->ans9 + $item->ans10 + $item->ans11 + $item->ans12 + $item->ans13 + $item->ans14 + $item->ans15 + $item->ans16 + $item->ans17 + $item->ans18 + $item->ans19 + $item->ans20, $item->created_at->format('d M Y H:m')];
+        }
+        $export = new SurveysExport($result);
+        return Excel::download($export, 'surveys.xlsx');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -52,7 +66,7 @@ class SurveyResource extends Controller
         $np = $request->input('np');
         $findrespondent_id = Respondent::select('id')->where('np', $np)->first();
         if ($findrespondent_id) {
-            $respondent_id = $findrespondent_id;
+            $respondent_id = $findrespondent_id->id;
         } else {
             $respondent_data = [
                 'respondentdepartment_id' => $request->input('respondentdepartment_id'),

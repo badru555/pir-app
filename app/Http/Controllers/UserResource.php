@@ -84,7 +84,16 @@ class UserResource extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = [
+            'name' => $request->input('name'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email')
+        ];
+        if ($request->input('password')) {
+            $data['password'] = Hash::make($request->input('password'));
+        }
+        $user->update($data);
+        return redirect('/users')->with('message', 'Pengguna berhasil diperbarui!');
     }
 
     /**
@@ -95,6 +104,7 @@ class UserResource extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        User::destroy($user->id);
+        return redirect('/users')->with('message', 'Pengguna berhasil dihapus');
     }
 }

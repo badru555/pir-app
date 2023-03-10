@@ -20,6 +20,7 @@ class CreateApplicationdocumentsTable extends Migration
             $table->foreignId('batch_id');
             $table->string('documentobservationrisk_ids');
             $table->string('documentprojectrisk_ids');
+            $table->text('surveyresult');
             $table->text('plantodo');
             $table->string('surveyresult_image')->nullable();
             $table->string('pentestresult_image')->nullable();

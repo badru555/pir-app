@@ -1,4 +1,32 @@
 @extends('questionare.layout')
+@section('script')
+    <script>
+        $(document).ready(function() {
+            var typingTimer;
+
+            $('#np').keyup(function() {
+                clearTimeout(typingTimer);
+                var val = $(this).val();
+                typingTimer = setTimeout(function() {
+                    $.ajax({
+                        type: "GET",
+                        url: "/check_np/" + val + "/" + <?= $application->id ?>,
+                        data: "data",
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.found) {
+                                alert(
+                                    'Anda sudah melakukan survey pada Aplikasi ini di batch yang sama!'
+                                );
+                                window.location = '/application';
+                            }
+                        }
+                    });
+                }, 3000);
+            });
+        });
+    </script>
+@endsection
 @section('content')
     <main>
         <div id="form_container">
@@ -42,8 +70,8 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <input type="text" name="np" class="form-control required"
-                                                    placeholder="NP">
+                                                <input type="text" name="np" id="np"
+                                                    class="form-control required" placeholder="NP">
                                             </div>
                                         </div>
                                         <div class="col-md-6">

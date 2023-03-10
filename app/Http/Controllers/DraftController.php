@@ -119,8 +119,15 @@ class DraftController extends Controller
         // KEPUASAN PENGGUNA
         chapter('HASIL SURVEY KEPUASAN PENGGUNA');
         $pdf::AddPage('L');
-        $imagePath = public_path('storage/' . $applicationdocument->surveyresult_image);
-        $pdf::Image($imagePath, $pdf::GetX(), $pdf::GetY(), $pdf::getPageWidth() - 150, 0, '', '', '', false, 300, 'C', false, false, 1, false, false, false);
+        $pdf::WriteHTML($applicationdocument->surveyresult, true, false, true, false, '');
+
+        // KEPUASAN PENGGUNA GAMBAR
+        if ($applicationdocument->surveyresult_image != null) {
+            // chapter('HASIL SURVEY KEPUASAN PENGGUNA');
+            $pdf::AddPage('L');
+            $imagePath = public_path('storage/' . $applicationdocument->surveyresult_image);
+            $pdf::Image($imagePath, $pdf::GetX(), $pdf::GetY(), $pdf::getPageWidth() - 150, 0, '', '', '', false, 300, 'C', false, false, 1, false, false, false);
+        }
 
         // HASIL PENTEST
         chapter('HASIL PENTEST');

@@ -9,15 +9,7 @@
     <title>Aplikasi</title>
 
     <!-- Favicons-->
-    <link rel="shortcut icon" href="/assets/questionare/img/favicon.ico" type="image/x-icon">
-    <link rel="apple-touch-icon" type="image/x-icon"
-        href="/assets/questionare/img/apple-touch-icon-57x57-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72"
-        href="/assets/questionare/img/apple-touch-icon-72x72-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114"
-        href="/assets/questionare/img/apple-touch-icon-114x114-precomposed.png">
-    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144"
-        href="/assets/questionare/img/apple-touch-icon-144x144-precomposed.png">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
     <!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap"
@@ -25,6 +17,7 @@
 
     <!-- BASE CSS -->
     <link href="/assets/questionare/css/animate.min.css" rel="stylesheet">
+    {{-- bootstrap 4 --}}
     <link href="/assets/questionare/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/questionare/css/menu.css" rel="stylesheet">
     <link href="/assets/questionare/css/style.css" rel="stylesheet">
@@ -49,6 +42,8 @@
             width: 100%;
         } */
     </style>
+
+    @yield('head')
 
 </head>
 
@@ -153,6 +148,8 @@
     <script src="/assets/questionare/js/main.js"></script>
     <!-- Theme script -->
     <script src="/assets/questionare/js/functions.js"></script>
+
+    @yield('script')
 
 
 </body>

@@ -169,7 +169,9 @@ class ApplicationDocumentResource extends Controller
             'batch_id' => $request->input('batch_id'),
             'documentobservationrisk_ids' => implode(',', $documentobservationrisk_ids),
             'documentprojectrisk_ids' => implode(',', $documentprojectriskproject_ids),
+            'surveyresult' => $request->input('surveyresult'),
             'plantodo' => $request->input('planning')
+
         ];
         if ($request->hasFile('surveyresult_image')) {
             $appdoc_data['surveyresult_image'] = $request->surveyresult_image->store('images-applicationdoc/resultsurvey');

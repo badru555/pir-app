@@ -28,8 +28,11 @@ Route::get('/application', [SurveyController::class, 'application']);
 Route::get('/survey/{application}', [SurveyController::class, 'survey']);
 Route::resource('surveys', SurveyResource::class);
 
+Route::get('/check_np/{np}/{application}', [SurveyController::class, 'checkrespondent']);
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/surveylist/{id}', [SurveyResource::class, 'detail']);
+    Route::get('/surveyexport/{id}', [SurveyResource::class, 'export']);
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::resource('users', UserResource::class);
     Route::resource('faqs', FaqResource::class);

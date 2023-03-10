@@ -12,7 +12,8 @@
 
 
         <div class="page-separator">
-            <div class="page-separator__text">Surveys</div>
+            <div class="page-separator__text">Surveys &nbsp; <a href="/surveyexport/{{ $surveys[0]->application_id }}"
+                    class="btn btn-sm btn-outline-primary">export excel</a></div>
         </div>
 
         {{-- <a class="btn btn-sm btn-rounded btn-primary mb-2" href="/users/create">Tambah Baru</a> --}}
