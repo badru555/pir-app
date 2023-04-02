@@ -84,6 +84,11 @@
     </style>
     <h2>Observasi Pengawasan Manajemen Proyek</h2>
     <h3>Fase Go-Live Support: QA Principal</h3>
+    @php
+        $level1 = 1;
+        $level2 = 1;
+        $level3 = 1;
+    @endphp
     @foreach ($observations[1] as $obs)
         <table border="1">
             <tr class="bg-secondary">
@@ -270,6 +275,9 @@
         @foreach ($migitations[1] as $mig)
             @php
                 $riskpotentions = explode(',', $mig->documentprojectriskactivity_ids);
+                $level1 = 1;
+                $level2 = 1;
+                $level3 = 1;
             @endphp
             <tr>
                 <td rowspan="{{ count($riskpotentions) }}">{{ $mig->project }}</td>
@@ -382,6 +390,9 @@
             @foreach ($migitations[2] as $mig)
                 @php
                     $riskpotentions = explode(',', $mig->documentprojectriskactivity_ids);
+                    $level1 = 1;
+                    $level2 = 1;
+                    $level3 = 1;
                 @endphp
                 <tr>
                     <td rowspan="{{ count($riskpotentions) }}">{{ $mig->project }}</td>
@@ -425,7 +436,7 @@
                             @endphp
                             <td>
                                 @for ($i = 0; $i < $projectactivitymigitations_count; $i++)
-                                    {{ $projectactivitymigitations[$i]->migitation }}<br>
+                                    {{ 'PP.C1.' . $level3++ . ' ' . $projectactivitymigitations[$i]->migitation }}<br>
                                 @endfor
                             </td>
                             <td>
@@ -495,6 +506,9 @@
             @foreach ($migitations[3] as $mig)
                 @php
                     $riskpotentions = explode(',', $mig->documentprojectriskactivity_ids);
+                    $level1 = 1;
+                    $level2 = 1;
+                    $level3 = 1;
                 @endphp
                 <tr>
                     <td rowspan="{{ count($riskpotentions) }}">{{ $mig->project }}</td>

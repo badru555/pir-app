@@ -74,24 +74,26 @@
 
                                 <td class="text-right">
                                     <!-- Default dropleft button -->
-                                    <div class="btn-group dropleft">
-                                        <a class="text-50" href="#" id="dropdownMenuLink" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons">more_vert</i>
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/users/{{ $item->id }}/edit">
-                                                Edit
+                                    @admin
+                                        <div class="btn-group dropleft">
+                                            <a class="text-50" href="#" id="dropdownMenuLink" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons">more_vert</i>
                                             </a>
-                                            <form action="/users/{{ $item->id }}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <button type="submit" class="dropdown-item"
-                                                    onclick="return confirm('Apakah anda yakin?')">Delete</button>
-                                            </form>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="/users/{{ $item->id }}/edit">
+                                                    Edit
+                                                </a>
+                                                <form action="/users/{{ $item->id }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="dropdown-item"
+                                                        onclick="return confirm('Apakah anda yakin?')">Delete</button>
+                                                </form>
 
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endadmin
 
                                 </td>
                             </tr>

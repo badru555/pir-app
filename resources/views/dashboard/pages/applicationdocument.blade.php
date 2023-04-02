@@ -15,7 +15,11 @@
 
         {{-- <a class="btn btn-sm btn-rounded btn-primary mb-2" href="/users/create">Tambah Baru</a> --}}
         <div class="card mb-lg-32pt">
-
+            @if (session()->has('message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-date"
                 data-lists-sort-desc="true" data-lists-values='["js-lists-values-question", "js-lists-values-answer"]'>
 
@@ -81,6 +85,14 @@
                                             <a class="dropdown-item" href="/draft/{{ $item->id }}">
                                                 View Draft
                                             </a>
+                                            <form action="/applicationdocuments/{{ $item->id }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="dropdown-item" type="submit"
+                                                    onclick="return confirm('Apakah anda yakin?')">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 

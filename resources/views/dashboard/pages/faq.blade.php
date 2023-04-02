@@ -17,7 +17,11 @@
 
         {{-- <a class="btn btn-sm btn-rounded btn-primary mb-2" href="/users/create">Tambah Baru</a> --}}
         <div class="card mb-lg-32pt">
-
+            @if (session()->has('message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('message') }}
+                </div>
+            @endif
             <div class="table-responsive" data-toggle="lists" data-lists-sort-by="js-lists-values-date"
                 data-lists-sort-desc="true" data-lists-values='["js-lists-values-question", "js-lists-values-answer"]'>
 
@@ -64,7 +68,7 @@
 
 
 
-                                {{-- <td class="text-right">
+                                <td class="text-right">
                                     <!-- Default dropleft button -->
                                     <div class="btn-group dropleft">
                                         <a class="text-50" href="#" id="dropdownMenuLink" data-toggle="dropdown"
@@ -72,17 +76,21 @@
                                             <i class="material-icons">more_vert</i>
                                         </a>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/quotationdraft/{{ $item->id }}">
-                                                View Draft
+                                            <a class="dropdown-item" href="/faqs/{{ $item->id }}/edit">
+                                                Edit
                                             </a>
-                                            <a class="dropdown-item" href="/invoices/create/{{ $item->id }}">
-                                                Proceed to Invoice
-                                            </a>
-                                            <a class="dropdown-item" href="#">Something else here</a>
+                                            <form action="/faqs/{{ $item->id }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="dropdown-item" type="submit"
+                                                    onclick="return confirm('Apakah anda yakin?')">
+                                                    Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
 
-                                </td> --}}
+                                </td>
                             </tr>
                         @endforeach
 

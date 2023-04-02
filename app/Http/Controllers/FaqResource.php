@@ -61,7 +61,7 @@ class FaqResource extends Controller
      */
     public function edit(Faq $faq)
     {
-        //
+        return view('dashboard.pages.faqupdate', ['faq' => $faq]);
     }
 
     /**
@@ -73,7 +73,12 @@ class FaqResource extends Controller
      */
     public function update(Request $request, Faq $faq)
     {
-        //
+        $updatedata = [
+            'question' => $request->input('question'),
+            'answer' => $request->input('answer')
+        ];
+        $faq->update($updatedata);
+        return redirect('faqs')->with('message', 'Berhasil diperbarui!');
     }
 
     /**
@@ -84,6 +89,7 @@ class FaqResource extends Controller
      */
     public function destroy(Faq $faq)
     {
-        //
+        Faq::destroy($faq->id);
+        return redirect('faqs')->with('message', 'Berhasil dihapus!');
     }
 }

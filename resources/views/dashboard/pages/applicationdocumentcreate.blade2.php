@@ -279,17 +279,17 @@
                 var index = $('#risks' + fase + ' li').length;
                 $('.modal-body #activitypane').append(activityform).end()
                     .find('.modal-body #activitypane #activitycontrol')
-                    .attr('name', 'activity[' + fase + '][' + index + '][]').end()
+                    .attr('name', 'activity[' + fase + '][][]').end()
                     .find('.modal-body #activitypane #observation')
-                    .attr('name', 'observation[' + fase + '][' + index + '][]').end()
+                    .attr('name', 'observation[' + fase + '][][]').end()
                     .find('.modal-body #activitypane #status')
-                    .attr('name', 'status[' + fase + '][' + index + '][]').end();
+                    .attr('name', 'status[' + fase + '][][]').end();
             });
             $('#add_risk_tolist').on('click', function(e) {
                 e.preventDefault();
                 var fase = $('#content #fase').val();
-                var index = $('#risks' + fase + ' li').length;
-                number = index + 1;
+                var number = $('#risks' + fase + ' li').length;
+                number = number + 1;
 
                 var number_activities = $('.modal-body #activitypane .card').length;
 
@@ -337,11 +337,11 @@
                             migitasiform);
                         var selectform = $(this).parent().prev().find('#migitasipane');
                         selectform.find('#migitasi:last').attr('name', 'migitasi[' + fase +
-                            '][' + number + '][' + i + '][]');
+                            '][][][]');
                         selectform.find('#isdone:last').attr('name', 'isdone[' + fase +
-                            '][' + number + '][' + i + '][]');
+                            '][][][]');
                         selectform.find('#note:last').attr('name', 'note[' + fase +
-                            '][' + number + '][' + i + '][]');
+                            '][][][]');
                     }).end();
             });
             $('#add_project_tolist').on('click', function(e) {
